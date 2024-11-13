@@ -1,6 +1,5 @@
-'use client';
-
 import { cn } from '@/lib/utils';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 
 const menuItems = [
@@ -11,6 +10,7 @@ const menuItems = [
   {
     title: 'Đơn hàng',
     href: '/orders',
+    authRequired: true,
   },
   {
     title: 'Đăng nhập',
@@ -25,15 +25,25 @@ const menuItems = [
 ];
 
 export default function NavItems({ className }: { className?: string }) {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get('accessToken');
+
   return menuItems.map((item) => {
-    return (
-      <Link
-        href={item.href}
-        key={item.href}
-        className={cn(className, 'font-sans')}
-      >
-        {item.title}
-      </Link>
-    );
+    if (
+      (!item.authRequired && accessToken) ||
+      (item.authRequired && !accessToken)
+    ) {
+      return null;
+    } else {
+      return (
+        <Link
+          href={item.href}
+          key={item.href}
+          className={cn(className, 'font-sans')}
+        >
+          {item.title}
+        </Link>
+      );
+    }
   });
 }
