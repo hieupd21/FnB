@@ -1,6 +1,8 @@
+import AppProvider from '@/components/app-provider';
+import { ThemeProvider } from '@/components/theme-provider';
+import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { cn } from '@/lib/utils';
 import './globals.css';
 
 const geistSans = localFont({
@@ -31,7 +33,16 @@ export default function RootLayout({
           `${geistSans.variable} ${geistMono.variable} min-h-screen bg-background antialiased`
         )}
       >
-        {children}
+        <AppProvider>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </AppProvider>
       </body>
     </html>
   );
