@@ -7,16 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useLoginMutation } from '@/queries/useAuth';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorApi } from '@/lib/utils';
+import { useLoginMutation } from '@/queries/useAuth';
+import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 export default function LoginForm() {
   const { mutateAsync, isPending } = useLoginMutation();
