@@ -5,7 +5,6 @@ const publicPaths = ['/login'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  console.log(request.url);
   const isAuth = Boolean(request.cookies.get('accessToken')?.value);
   // Chưa đăng nhập thì không cho vào private paths
   if (privatePaths.some((path) => pathname.startsWith(path)) && !isAuth) {
