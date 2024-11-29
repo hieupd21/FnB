@@ -16,9 +16,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginMutation } from '@/queries/useAuth';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorApi } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const { mutateAsync, isPending } = useLoginMutation();
+  const router = useRouter();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -31,7 +33,10 @@ export default function LoginForm() {
     if (isPending) return;
     try {
       const result = await mutateAsync(data);
-      toast({ description: result.payload.message });
+      if (result.status === 200) {
+        toast({ description: result.payload.message });
+        router.push('/manage/dashboard');
+      }
     } catch (error: any) {
       handleErrorApi({ error, setError: form.setError });
     }
