@@ -1,4 +1,4 @@
-import authApiRequest from '@/apiRequests/authApiRequest';
+import authApiRequest from '@/apiRequests/auth';
 import { LoginBodyType } from '@/schemaValidations/auth.schema';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
