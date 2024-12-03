@@ -11,8 +11,12 @@ import {
 } from '@/schemaValidations/account.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useChangePasswordMutation } from '@/queries/useAccount';
+import { toast } from '@/hooks/use-toast';
+import { handleErrorApi } from '@/lib/utils';
 
 export default function ChangePasswordForm() {
+  const changePasswordMutation = useChangePasswordMutation();
   const form = useForm<ChangePasswordBodyType>({
     resolver: zodResolver(ChangePasswordBody),
     defaultValues: {
@@ -22,11 +26,25 @@ export default function ChangePasswordForm() {
     },
   });
 
+  const reset = () => form.reset();
+
+  const onSubmit = async (data: ChangePasswordBodyType) => {
+    if (changePasswordMutation.isPending) return;
+    try {
+      const result = await changePasswordMutation.mutateAsync(data);
+      toast({ description: result.payload.message });
+    } catch (error) {
+      handleErrorApi({ error, setError: form.setError });
+    }
+  };
+
   return (
     <Form {...form}>
       <form
         noValidate
         className='grid auto-rows-max items-start gap-4 md:gap-8'
+        onReset={reset}
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <Card className='overflow-hidden' x-chunk='dashboard-07-chunk-4'>
           <CardHeader>
@@ -92,10 +110,12 @@ export default function ChangePasswordForm() {
                 )}
               />
               <div className=' items-center gap-2 md:ml-auto flex'>
-                <Button variant='outline' size='sm'>
+                <Button variant='outline' size='sm' type='reset'>
                   Hủy
                 </Button>
-                <Button size='sm'>Lưu thông tin</Button>
+                <Button size='sm' type='submit'>
+                  Lưu thông tin
+                </Button>
               </div>
             </div>
           </CardContent>

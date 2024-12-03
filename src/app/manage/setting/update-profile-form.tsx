@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { handleErrorApi } from '@/lib/utils';
 import { useAccountMe, useUpdateMeMutation } from '@/queries/useAccount';
 import { useUploadMediaMutation } from '@/queries/useMedia';
@@ -31,6 +31,8 @@ export default function UpdateProfileForm() {
       avatar: undefined,
     },
   });
+
+  const { toast } = useToast();
 
   const avatar = form.watch('avatar');
   const name = form.watch('name');
